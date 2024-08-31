@@ -18,6 +18,10 @@
         <id>spigot-repo</id>
         <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
+    <repository>
+        <id>elitemobs-repo</id>
+        <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+    </repository>
     </repositories>
 
     <dependencies>
@@ -25,6 +29,12 @@
         <groupId>org.spigotmc</groupId>
         <artifactId>spigot-api</artifactId>
         <version>1.21.1-R0.1-SNAPSHOT</version>
+        <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.magmaguy</groupId>
+        <artifactId>EliteMobs</artifactId>
+        <version>9.0.2-SNAPSHOT</version>
         <scope>provided</scope>
     </dependency>
     </dependencies>
