@@ -46,7 +46,7 @@ public class EliteMobsImprovements extends JavaPlugin implements Listener {
 
     private void logOption(String optionName, boolean isEnabled, String enabledMessage, String disabledMessage) {
         String statusMessage = isEnabled ? enabledMessage : disabledMessage;
-        getLogger().info(String.format("[EliteMobsImprovements] %s: Players %s", optionName, statusMessage));
+        getLogger().info(String.format("%s: Players %s", optionName, statusMessage));
     }
 
     private void loadConfigOptions() {
