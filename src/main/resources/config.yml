@@ -1,0 +1,11 @@
+save-items: true
+save-experience: true
+graveyard-locations:
+  em_primis:
+    - x: 1389
+      y: 18
+      z: 364
+    - x: 1201
+      y: 18
+      z: 375
+

@@ -1,0 +1,6 @@
+name: EliteMobsImprovements
+version: 1.0.1
+main: net.mindphlux.EliteMobsImprovements
+description: Improves the EliteMobs plugin.
+author: mindphlux
+api-version: 1.21
