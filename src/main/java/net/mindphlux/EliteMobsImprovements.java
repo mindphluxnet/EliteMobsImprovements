@@ -35,18 +35,24 @@ public class EliteMobsImprovements extends JavaPlugin implements Listener {
 
         // Register the event listener
         getServer().getPluginManager().registerEvents(this, this);
-        getLogger().info("[EliteMobsImprovements] Plugin enabled!");
+
+        logConfigOptions();
+    }
+
+    private void logConfigOptions() {
+        logOption("Items", saveItems, "won't drop items on death.", "will drop items on death.");
+        logOption("Experience", saveExperience, "won't lose experience on death.", "will lose experience on death.");
+    }
+
+    private void logOption(String optionName, boolean isEnabled, String enabledMessage, String disabledMessage) {
+        String statusMessage = isEnabled ? enabledMessage : disabledMessage;
+        getLogger().info(String.format("[EliteMobsImprovements] %s: Players %s", optionName, statusMessage));
     }
 
     private void loadConfigOptions() {
         FileConfiguration config = getConfig();
         saveItems = config.getBoolean("save-items", true);
         saveExperience = config.getBoolean("save-experience", true);
-    }
-
-    @Override
-    public void onDisable() {
-        getLogger().info("[EliteMobsImprovements] Plugin disabled!");
     }
 
     // Event listener for player death
