@@ -1,5 +1,10 @@
 package net.mindphlux;
 
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.model.group.Group;
+import net.luckperms.api.model.user.User;
+import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -9,6 +14,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
@@ -29,12 +36,14 @@ public class EliteMobsImprovements extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        PluginManager pluginManager = getServer().getPluginManager();
         saveDefaultConfig();
 
         loadConfigOptions();
 
         // Register the event listener
-        getServer().getPluginManager().registerEvents(this, this);
+        pluginManager.registerEvents(this, this);
+        pluginManager.registerEvents(new ChatFormatter(), this);
 
         logConfigOptions();
     }
@@ -159,5 +168,21 @@ public class EliteMobsImprovements extends JavaPlugin implements Listener {
             }
         }
         return false;
+    }
+
+    public static String getPlayerRank(Player player) {
+        LuckPerms luckPerms = LuckPermsProvider.get();
+        User user = luckPerms.getUserManager().getUser(player.getUniqueId());
+        if(user == null) return "Default";
+
+        String groupName = user.getPrimaryGroup();
+        Group group = luckPerms.getGroupManager().getGroup(groupName);
+
+        if(group != null) {
+            return group.getDisplayName();
+        }
+        else {
+            return "Default";
+        }
     }
 }

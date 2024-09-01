@@ -2,10 +2,10 @@ save-items: true
 save-experience: true
 graveyard-locations:
   em_primis:
-    - x: 1389
+    - x: 1389 # near wormhole
       y: 18
       z: 364
-    - x: 1201
+    - x: 1201 # northern town gate
       y: 18
       z: 375
 
