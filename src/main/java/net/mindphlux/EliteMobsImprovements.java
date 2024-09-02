@@ -1,10 +1,5 @@
 package net.mindphlux;
 
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.model.group.Group;
-import net.luckperms.api.model.user.User;
-import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -15,7 +10,6 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
@@ -34,6 +28,27 @@ public class EliteMobsImprovements extends JavaPlugin implements Listener {
     private boolean saveItems;
     private boolean saveExperience;
 
+    private final String[] instancedMaps = {
+            "em_id_binder_of_worlds",
+            "em_id_bone_monastery",
+            "em_id_craftenmines_lab",
+            "em_id_enchantment_challenge",
+            "em_id_frost_palace",
+            "em_id_oasis_pyramid",
+            "em_id_bloodtemple",
+            "em_id_primis_gladius",
+            "em_id_the_bridge",
+            "em_id_the_cave",
+            "em_id_the_city",
+            "em_id_the_climb",
+            "em_id_the_deep_mines",
+            "em_id_the_mines",
+            "em_id_the_nether_bell",
+            "em_id_the_nether_wastes",
+            "em_id_the_palace",
+            "em_id_the_quarry",
+    };
+
     @Override
     public void onEnable() {
         PluginManager pluginManager = getServer().getPluginManager();
@@ -43,7 +58,6 @@ public class EliteMobsImprovements extends JavaPlugin implements Listener {
 
         // Register the event listener
         pluginManager.registerEvents(this, this);
-        pluginManager.registerEvents(new ChatFormatter(), this);
 
         logConfigOptions();
     }
@@ -69,6 +83,8 @@ public class EliteMobsImprovements extends JavaPlugin implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         UUID playerId = player.getUniqueId();
+
+        if(isDungeon(player.getWorld())) return;
 
         if(saveItems) {
             // Save the player's equipped items
@@ -96,6 +112,8 @@ public class EliteMobsImprovements extends JavaPlugin implements Listener {
         Player player = event.getPlayer();
         UUID playerId = player.getUniqueId();
         World world = player.getWorld();
+
+        if(isDungeon(world)) return;
 
         if(saveItems) {
             // Re-equip the saved armor and main hand item
@@ -170,19 +188,12 @@ public class EliteMobsImprovements extends JavaPlugin implements Listener {
         return false;
     }
 
-    public static String getPlayerRank(Player player) {
-        LuckPerms luckPerms = LuckPermsProvider.get();
-        User user = luckPerms.getUserManager().getUser(player.getUniqueId());
-        if(user == null) return "Default";
-
-        String groupName = user.getPrimaryGroup();
-        Group group = luckPerms.getGroupManager().getGroup(groupName);
-
-        if(group != null) {
-            return group.getDisplayName();
+    private boolean isDungeon(World world) {
+        for(String map: instancedMaps) {
+            if(world.getName().startsWith(map)) {
+                return true;
+            }
         }
-        else {
-            return "Default";
-        }
+        return false;
     }
 }
